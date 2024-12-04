@@ -30,17 +30,6 @@ export class UpdateUserRequestDto {
   @MaxLength(20)
   @IsOptional()
   password?: string;
-
-  @ApiPropertyOptional({
-    description: 'Senha do usuário, deve ter pelo menos 6 caracteres',
-    example: 'password123',
-    required: false,
-  })
-  @IsString()
-  @MinLength(6)
-  @MaxLength(20)
-  @IsOptional()
-  oldPassword?: string;
 }
 
 export class UpdateUserIdRequestDto {

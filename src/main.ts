@@ -10,7 +10,6 @@ async function bootstrap() {
     .setTitle('Encurtador de URL')
     .setDescription('APi de encurtador de URL')
     .setVersion('1.0')
-    .addTag('encurtador')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
