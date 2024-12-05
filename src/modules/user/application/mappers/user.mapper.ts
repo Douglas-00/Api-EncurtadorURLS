@@ -29,6 +29,14 @@ export class UserMapper {
     };
   }
 
+  static toFindResponseDto(user: Partial<User>): ShowUserResponseDto {
+    return {
+      id: user.id,
+      email: user.email,
+      password: user.password,
+    };
+  }
+
   static toUpdateResponseDto(user: User): UpdateUserResponseDto {
     return {
       id: user.id,

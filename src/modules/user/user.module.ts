@@ -10,6 +10,7 @@ import { DeleteUserController } from './infra/controller/delete.controller';
 import { UpdateUserController } from './infra/controller/update.controller';
 import { ShowUserController } from './infra/controller/show.controller';
 import { ListUsersController } from './infra/controller/list.controller';
+import { FindUserUseCase } from './application/useCase/findByEmail.useCase';
 
 @Module({
   providers: [
@@ -20,6 +21,7 @@ import { ListUsersController } from './infra/controller/list.controller';
     CreateUserUseCase,
     DeleteUserUseCase,
     UpdateUserUseCase,
+    FindUserUseCase,
     ShowUserUseCase,
     ListUserUseCase,
   ],
