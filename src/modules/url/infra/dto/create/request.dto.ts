@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsInt } from 'class-validator';
+import { IsString, IsNotEmpty, IsInt, Matches } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 
@@ -9,6 +9,9 @@ export class CreateUrlRequestDto {
   })
   @IsString()
   @IsNotEmpty()
+  @Matches(/^(https?:\/\/)/, {
+    message: 'The URL must start with http:// or https://',
+  })
   fromUrl: string;
 }
 

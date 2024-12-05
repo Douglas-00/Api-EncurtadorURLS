@@ -7,23 +7,6 @@ import { UrlRepository } from '../../application/domain/repositories/url.reposit
 export class UrlPrismaRepository implements UrlRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  async findByUrl(fromUrl: string): Promise<Url | null> {
-    return this.prisma.url.findFirst({
-      where: {
-        fromUrl,
-        deletedAt: null,
-      },
-    });
-  }
-
-  async findByShortUrl(shortUrl: string): Promise<Url | null> {
-    return this.prisma.url.findUnique({
-      where: {
-        shortUrl,
-      },
-    });
-  }
-
   async create(fromUrl: string, shortUrl: string): Promise<Url> {
     return this.prisma.url.create({
       data: {
@@ -33,18 +16,21 @@ export class UrlPrismaRepository implements UrlRepository {
     });
   }
 
-  async findAllByUserId(userId: number): Promise<Url[]> {
+  async findAllByUserId(userId: number): Promise<Partial<Url>[]> {
     return this.prisma.url.findMany({
       where: {
         userId,
         deletedAt: null,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
   }
 
   async delete(id: number): Promise<void> {
     await this.prisma.url.update({
-      where: { id },
+      where: { id, deletedAt: null },
       data: { deletedAt: new Date() },
     });
   }
@@ -65,5 +51,22 @@ export class UrlPrismaRepository implements UrlRepository {
         },
       },
     });
+  }
+
+  async findById(id: number, userId: number): Promise<Url | null> {
+    return this.prisma.url.findUnique({
+      where: {
+        id,
+        userId,
+        deletedAt: null,
+      },
+    });
+  }
+
+  async findUserById(userId: number): Promise<boolean> {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+    });
+    return !!user;
   }
 }

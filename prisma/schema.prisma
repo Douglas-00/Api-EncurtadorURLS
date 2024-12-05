@@ -13,7 +13,6 @@ model User {
   email     String @unique
   password  String
   urls      Url[]
-  clickLogs ClickLog[]
   createdAt DateTime @default(now())
   deletedAt DateTime?
   updatedAt DateTime @updatedAt
@@ -25,21 +24,8 @@ model Url {
   shortUrl  String @unique
   userId    Int?
   user      User? @relation(fields: [userId], references: [id])
-  clickLogs    ClickLog[]
+  clicks    Int? @default(0)
   createdAt DateTime @default(now())
   deletedAt DateTime?
   updatedAt DateTime @updatedAt
-}
-
-model ClickLog {
-  id        Int      @id @default(autoincrement())
-  clickedAt DateTime @default(now())
-  ipAddress String?  
-  userAgent String?
-  userId    Int?   
-  urlId     Int
-
-  user      User?    @relation(fields: [userId], references: [id])
-
-  url       Url      @relation(fields: [urlId], references: [id])
 }

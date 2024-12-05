@@ -21,7 +21,9 @@ export class AuthGuard implements CanActivate {
   }
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
+
     const token = this.extractToken(request);
+
     if (!token) {
       throw new UnauthorizedException('Token not found');
     }
@@ -30,9 +32,10 @@ export class AuthGuard implements CanActivate {
       const payload = await this.jwtService.verifyAsync(token, {
         secret: this.jwtSecret,
       });
+
       request['user'] = payload;
     } catch (error) {
-      throw new UnauthorizedException('Token not found', error);
+      throw new Error(error);
     }
 
     return true;

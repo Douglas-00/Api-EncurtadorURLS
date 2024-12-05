@@ -1,4 +1,4 @@
-import { Injectable, ConflictException, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { UrlRepository } from '../domain/repositories/url.repository';
 import { CreateUrlRequestDto } from '../../infra/dto/create/request.dto';
 import { CreateUrlResponseDto } from '../../infra/dto/create/response.dto';
@@ -17,13 +17,14 @@ export class CreateUrlUseCase {
   ): Promise<CreateUrlResponseDto> {
     const { fromUrl } = payload;
 
-    const existingUrl = await this.urlRepository.findByUrl(fromUrl);
-
-    if (existingUrl) {
-      throw new ConflictException('URL already exists');
-    }
-
     const shortUrl = UrlMapper.generateShortUrl();
+
+    if (userId) {
+      const userExists = await this.urlRepository.findUserById(userId);
+      if (!userExists) {
+        throw new NotFoundException('User not found');
+      }
+    }
 
     const newUrl = await this.urlRepository.create(fromUrl, shortUrl);
 

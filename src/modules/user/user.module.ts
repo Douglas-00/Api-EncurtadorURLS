@@ -32,6 +32,6 @@ import { FindUserUseCase } from './application/useCase/findByEmail.useCase';
     ShowUserController,
     ListUsersController,
   ],
-  exports: [],
+  exports: [FindUserUseCase],
 })
 export class UserModule {}

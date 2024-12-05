@@ -47,7 +47,7 @@ export class PrismaUserRepository implements UserRepository {
         name: true,
         email: true,
       },
-      orderBy: { createdAt: 'asc' },
+      orderBy: { createdAt: 'desc' },
     });
   }
 }
