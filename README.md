@@ -27,7 +27,7 @@ Clone o repositório para o seu ambiente local:
 
 ```bash
 git clone https://github.com/Douglas-00/Api-EncurtadorURLS.git
-cd url-shortener
+cd ....
 ```
 
 ### Passo 2: Configuração do Ambiente
