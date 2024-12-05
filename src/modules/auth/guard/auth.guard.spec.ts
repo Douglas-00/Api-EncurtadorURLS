@@ -43,12 +43,12 @@ describe('AuthGuard', () => {
   });
 
   it('should throw an UnauthorizedException if token is invalid', async () => {
-    jest.spyOn(jwtService, 'verifyAsync').mockRejectedValue(new Error());
+    jest.spyOn(jwtService, 'verifyAsync').mockRejectedValue('Invalid token');
     const context = createMockExecutionContext({
       headers: { authorization: 'Bearer invalid-token' },
     });
     await expect(guard.canActivate(context)).rejects.toThrow(
-      new UnauthorizedException('Token not found'),
+      new UnauthorizedException('Invalid token'),
     );
   });
 

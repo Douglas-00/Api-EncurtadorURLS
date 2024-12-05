@@ -1,22 +1,21 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../domain/repositories/user.repository';
-import { ShowUserResponseDto } from '../../infra/dto/show/response.dto';
 import { UserMapper } from '../mappers/user.mapper';
+import { AppLogger } from 'src/modules/logger/logger.service';
+import { ShowUserResponseDto } from '../../infra/dto/show/response.dto';
 
 @Injectable()
 export class ShowUserUseCase {
   constructor(
     @Inject('UserPrismaRepository')
     private readonly userRepository: UserRepository,
+    private readonly logger: AppLogger,
   ) {}
 
   async execute(userId: number): Promise<ShowUserResponseDto> {
-    const user = await this.userRepository.findById(userId);
+    this.logger.log('Showing user');
+    const users = await this.userRepository.findById(userId);
 
-    if (!user) {
-      throw new NotFoundException('User not found');
-    }
-
-    return UserMapper.toShowResponseDto(user);
+    return UserMapper.toShowResponseDto(users);
   }
 }

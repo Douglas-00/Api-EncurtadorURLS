@@ -2,6 +2,7 @@ import { Injectable, Inject } from '@nestjs/common';
 import { UrlRepository } from '../domain/repositories/url.repository';
 import { RedisService } from 'src/modules/redis/redis.service';
 import { Url } from '../domain/entities/url.entity';
+import { AppLogger } from 'src/modules/logger/logger.service';
 
 @Injectable()
 export class IncrementClickUseCase {
@@ -9,6 +10,7 @@ export class IncrementClickUseCase {
     @Inject('UrlPrismaRepository')
     private readonly urlRepository: UrlRepository,
     private readonly redisService: RedisService,
+    private readonly logger: AppLogger,
   ) {}
 
   async execute(shortUrl: string): Promise<Partial<Url>> {
@@ -19,6 +21,7 @@ export class IncrementClickUseCase {
     const url = await this.urlRepository.findByShortUrl(shortUrl);
 
     if (url) {
+      this.logger.warn('Updating URL clicks');
       await this.urlRepository.updateClicks(url.id, count);
     }
 

@@ -35,10 +35,10 @@ export class UrlPrismaRepository implements UrlRepository {
     });
   }
 
-  async update(id: number, shortUrl: string): Promise<Url> {
+  async update(id: number, fromUrl: string): Promise<Url> {
     return await this.prisma.url.update({
       where: { id, deletedAt: null },
-      data: { shortUrl },
+      data: { fromUrl },
     });
   }
 
