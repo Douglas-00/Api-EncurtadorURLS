@@ -50,7 +50,13 @@ Com o arquivo .env configurado, você pode iniciar os serviços com o Docker Com
 docker-compose up --build
 ```
 
-### Passo 4: Testar a aplicação
+### Passo 5: Executar Migration, criar tabelas.
+
+```bash
+npx prisma migrate dev
+```
+
+### Passo 6: Testar a aplicação
 
 Com a aplicação rodando, você pode testar os endpoints usando o Postman ou qualquer outra ferramenta de API.
 
