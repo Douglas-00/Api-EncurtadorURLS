@@ -69,4 +69,20 @@ export class UrlPrismaRepository implements UrlRepository {
     });
     return !!user;
   }
+
+  async findByShortUrl(shortUrl: string): Promise<Partial<Url>> {
+    return this.prisma.url.findUnique({
+      where: {
+        shortUrl,
+        deletedAt: null,
+      },
+    });
+  }
+
+  async updateClicks(id: number, totalClick: number): Promise<Url> {
+    return this.prisma.url.update({
+      where: { id },
+      data: { clicks: totalClick },
+    });
+  }
 }

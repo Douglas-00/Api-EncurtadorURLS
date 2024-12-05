@@ -8,8 +8,12 @@ import { UpdateUrlUseCase } from './application/useCase/update.useCase';
 import { UpdateUrlController } from './infra/controller/update.controller';
 import { DeleteUrlController } from './infra/controller/delete.controller';
 import { ListUrlController } from './infra/controller/list.controller';
+import { IncrementClickUseCase } from './application/useCase/IncrementClick.useCase';
+import { IncrementClickController } from './infra/controller/incrementClick.controller';
+import { RedisModule } from '../redis/redis.module';
 
 @Module({
+  imports: [RedisModule],
   providers: [
     {
       provide: 'UrlPrismaRepository',
@@ -19,12 +23,14 @@ import { ListUrlController } from './infra/controller/list.controller';
     DeleteUrlUseCase,
     UpdateUrlUseCase,
     ListUrlsUseCase,
+    IncrementClickUseCase,
   ],
   controllers: [
     CreateUrlController,
     UpdateUrlController,
     DeleteUrlController,
     ListUrlController,
+    IncrementClickController,
   ],
   exports: [],
 })

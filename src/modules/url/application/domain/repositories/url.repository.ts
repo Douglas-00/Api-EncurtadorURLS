@@ -8,4 +8,6 @@ export interface UrlRepository {
   findAllByUserId(userId: number): Promise<Partial<Url>[]>;
   findById(id: number, userId: number): Promise<Partial<Url>>;
   findUserById(userId: number): Promise<boolean>;
+  findByShortUrl(shortUrl: string): Promise<Partial<Url>>;
+  updateClicks(id: number, clicks: number): Promise<Url>;
 }
