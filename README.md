@@ -47,7 +47,7 @@ JWT_EXPIRATION_TIME="3600"
 Com o arquivo .env configurado, você pode iniciar os serviços com o Docker Compose.
 
 ```bash
-docker-compose up --build
+docker-compose up --build -d
 ```
 
 ### Passo 5: Executar Migration, criar tabelas.
