@@ -25,11 +25,11 @@ export class CreateUrlUseCase {
 
     const shortUrl = UrlMapper.generateShortUrl();
 
-    const newUrl = await this.urlRepository.create({
-      fromUrl,
-      shortUrl,
-      userId: userId || null,
-    });
+    const newUrl = await this.urlRepository.create(fromUrl, shortUrl);
+
+    if (userId) {
+      await this.urlRepository.updateUser(newUrl.id, userId);
+    }
 
     return {
       shortUrl: newUrl.shortUrl,

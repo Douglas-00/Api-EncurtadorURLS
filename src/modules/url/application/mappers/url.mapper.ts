@@ -1,12 +1,22 @@
+import * as crypto from 'crypto';
+
 export class UrlMapper {
-  static generateShortUrl(): string {
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let shortUrl = '';
-    for (let i = 0; i < 6; i++) {
-      const randomIndex = Math.floor(Math.random() * characters.length);
-      shortUrl += characters[randomIndex];
-    }
+  private static readonly URL_LENGTH = 6;
+
+  static generateShortUrl() {
+    const randomBytes = crypto.randomBytes(4);
+    const shortUrl = UrlMapper.toBase64Url(randomBytes);
+
+    shortUrl.slice(0, UrlMapper.URL_LENGTH);
+
     return shortUrl;
+  }
+
+  private static toBase64Url(buffer: Buffer): string {
+    return buffer
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
   }
 }

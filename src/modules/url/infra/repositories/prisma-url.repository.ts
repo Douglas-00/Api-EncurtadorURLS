@@ -11,6 +11,7 @@ export class UrlPrismaRepository implements UrlRepository {
     return this.prisma.url.findFirst({
       where: {
         fromUrl,
+        deletedAt: null,
       },
     });
   }
@@ -23,16 +24,11 @@ export class UrlPrismaRepository implements UrlRepository {
     });
   }
 
-  async create(payload: {
-    fromUrl: string;
-    shortUrl: string;
-    userId?: number | null;
-  }): Promise<Url> {
+  async create(fromUrl: string, shortUrl: string): Promise<Url> {
     return this.prisma.url.create({
       data: {
-        fromUrl: payload.fromUrl,
-        shortUrl: payload.shortUrl,
-        userId: payload.userId || null,
+        fromUrl,
+        shortUrl,
       },
     });
   }
@@ -55,8 +51,19 @@ export class UrlPrismaRepository implements UrlRepository {
 
   async update(id: number, shortUrl: string): Promise<Url> {
     return await this.prisma.url.update({
-      where: { id },
+      where: { id, deletedAt: null },
       data: { shortUrl },
+    });
+  }
+
+  async updateUser(UrlId: number, userId: number): Promise<Url> {
+    return this.prisma.url.update({
+      where: { id: UrlId },
+      data: {
+        user: {
+          connect: { id: userId },
+        },
+      },
     });
   }
 }

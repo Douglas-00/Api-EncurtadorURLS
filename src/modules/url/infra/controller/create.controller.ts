@@ -1,4 +1,11 @@
-import { Controller, Post, Body, Param } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Param,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { CreateUrlUseCase } from '../../application/useCase/create.useCase';
 import { CreateUrlRequestDto } from '../dto/create/request.dto';
@@ -17,11 +24,13 @@ export class CreateUrlController {
   })
   @ApiResponse({ status: 200, description: 'URL shorten created success.' })
   @ApiResponse({ status: 409, description: 'URL already exists.' })
+  @UsePipes(new ValidationPipe({ transform: true }))
   //   @UseGuards(JwtAuthGuard) // Garantir que o usuário esteja autenticado
   async shortenUrl(
     @Body() createUrlDto: CreateUrlRequestDto,
-    @Param() userId: any, // Pega o usuário autenticado via JWT
+    // @Param() { userId }: CreateUrlByUserIdRequestDto,
   ): Promise<CreateUrlResponseDto> {
+    const userId = null;
     return this.useCase.execute(createUrlDto, userId);
   }
 }
