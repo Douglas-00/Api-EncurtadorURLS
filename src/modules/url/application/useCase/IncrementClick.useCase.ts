@@ -1,4 +1,4 @@
-import { Injectable, Inject } from '@nestjs/common';
+import { Injectable, Inject, NotFoundException } from '@nestjs/common';
 import { UrlRepository } from '../domain/repositories/url.repository';
 import { RedisService } from 'src/modules/redis/redis.service';
 import { Url } from '../domain/entities/url.entity';
@@ -14,6 +14,13 @@ export class IncrementClickUseCase {
   ) {}
 
   async execute(shortUrl: string): Promise<Partial<Url>> {
+    const verifyUrl = await this.urlRepository.findByShortUrl(shortUrl);
+
+    if (!verifyUrl) {
+      this.logger.warn('URL not found');
+      throw new NotFoundException('URL not found');
+    }
+
     await this.redisService.incrementClickCount(shortUrl);
 
     const count = await this.redisService.getClickCount(shortUrl);

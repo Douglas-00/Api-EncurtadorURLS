@@ -70,7 +70,7 @@ export class UrlPrismaRepository implements UrlRepository {
     return !!user;
   }
 
-  async findByShortUrl(shortUrl: string): Promise<Partial<Url>> {
+  async findByShortUrl(shortUrl: string): Promise<Partial<Url> | null> {
     return this.prisma.url.findUnique({
       where: {
         shortUrl,

@@ -1,7 +1,15 @@
-import { Controller, Get, Param, Redirect } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  Redirect,
+  UsePipes,
+  ValidationPipe,
+} from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { URL_RESOURCE } from './route';
 import { IncrementClickUseCase } from '../../application/useCase/IncrementClick.useCase';
+import { ShortUrlDto } from '../dto/increment/request.dto';
 
 @ApiTags('URLs')
 @Controller(URL_RESOURCE)
@@ -19,9 +27,10 @@ export class IncrementClickController {
     status: 404,
     description: 'URL not found or already deleted.',
   })
+  @UsePipes(new ValidationPipe({ transform: true }))
   @Redirect()
   async redirectToOriginalUrl(
-    @Param('shortUrl') shortUrl: string,
+    @Param() { shortUrl }: ShortUrlDto,
   ): Promise<any> {
     const url = await this.useCase.execute(shortUrl);
 
