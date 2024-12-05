@@ -36,8 +36,9 @@ export class CreateUrlUseCase {
       await this.urlRepository.updateUser(newUrl.id, userId);
     }
 
+    const baseUrl = process.env.BASE_URL || 'http://localhost';
     return {
-      shortUrl: newUrl.shortUrl,
+      shortUrl: `${baseUrl}/${newUrl.shortUrl}`,
     };
   }
 }
